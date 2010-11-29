@@ -63,19 +63,15 @@ zend_module_entry mschart_module_entry =
 #define MSCHART_FORMAT_JPEG 1
 #define MSCHART_FORMAT_PNG  2
 #define MSCHART_FORMAT_BMP  3
-#define MSCHART_FORMAT_ICON 4
-#define MSCHART_FORMAT_TIFF 5
-#define MSCHART_FORMAT_WMF  6
-#define MSCHART_FORMAT_MAX 6
+#define MSCHART_FORMAT_TIFF 4
+#define MSCHART_FORMAT_MAX 4
 
 PHP_MINIT_FUNCTION(mschart)
 {
 	REGISTER_MSCHART_CONSTANT(MSCHART_FORMAT_JPEG);
 	REGISTER_MSCHART_CONSTANT(MSCHART_FORMAT_PNG);
 	REGISTER_MSCHART_CONSTANT(MSCHART_FORMAT_BMP);
-	REGISTER_MSCHART_CONSTANT(MSCHART_FORMAT_ICON);
 	REGISTER_MSCHART_CONSTANT(MSCHART_FORMAT_TIFF);
-	REGISTER_MSCHART_CONSTANT(MSCHART_FORMAT_WMF);
 
 	return SUCCESS;
 }
@@ -92,28 +88,29 @@ PHP_FUNCTION(mschart_loadxml)
 {
 	array<unsigned char> ^ buf = gcnew array<unsigned char>(4096);
 	int b = 0;
-	char* xmlstr = NULL;
-	int xmlstrlen = 0;
-	int format = 0;
-	BOOL format_valid = false;
+	char* xml = NULL;
+	int xml_len = 0;
+	int image_format = 0;
+	char *filename = NULL;
+	int filename_len = 0;
 
-	if(zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s|l", &xmlstr, &xmlstrlen, &format) == FAILURE)
+	if(zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s|ls", &xml, &xml_len, &image_format, &filename, &filename_len) == FAILURE)
 	{
 			RETURN_FALSE;
 	}
 
-	if (format < 0 || format > MSCHART_FORMAT_MAX) {
+	if (image_format < 0 || image_format > MSCHART_FORMAT_MAX) {
 		zend_throw_exception_ex(zend_exception_get_default(TSRMLS_C), 0 TSRMLS_CC, "Invalid image format");
-	} else if (format = 0) {
-		format = MSCHART_FORMAT_PNG;
+	} else if (image_format == 0) {
+		image_format = MSCHART_FORMAT_PNG;
 	}
 
-	String^ xmlString = gcnew String(xmlstr, 0, xmlstrlen);
+	String^ xmlString = gcnew String(xml, 0, xml_len);
 	StringReader^ strReader = gcnew StringReader(xmlString);
 
-	Chart ^chart1 = gcnew Chart();
+	Chart ^chart_inst = gcnew Chart();
 	try {
-		chart1->Serializer->Load(strReader);
+		chart_inst->Serializer->Load(strReader);
 
 	/*TODO: Check if Serializer actually throws exception not extending the base Exeption class 
 	 * Did not manage to throw such ex so far. Have asked the devs.
@@ -122,42 +119,50 @@ PHP_FUNCTION(mschart_loadxml)
 		zend_throw_exception_ex(zend_exception_get_default(TSRMLS_C), 0 TSRMLS_CC, "Could not parse input: %s (%s)", ex->GetType()->FullName, ex->Message);
 	}
 
-	chart1->Serializer->Save("a1.xml");
-	chart1->ChartAreas[0]->AxisX->Title = "Tilte axis";
+	chart_inst->Serializer->Save("a1.xml");
+	chart_inst->ChartAreas[0]->AxisX->Title = "Tilte axis";
 
-	MemoryStream ^chartStream = gcnew MemoryStream();
+	if (filename_len > 0) {
+		String^ filenameString = gcnew String(filename, 0, filename_len);
+		switch (image_format) {
+			case MSCHART_FORMAT_JPEG:
+					chart_inst->SaveImage(filenameString, ChartImageFormat::Jpeg);
+				break;
+			case MSCHART_FORMAT_BMP:
+					chart_inst->SaveImage(filenameString, ChartImageFormat::Bmp);
+				break;
+			case MSCHART_FORMAT_TIFF:
+					chart_inst->SaveImage(filenameString, ChartImageFormat::Tiff);
+				break;
+			default:
+			case MSCHART_FORMAT_PNG:
+					chart_inst->SaveImage(filenameString, ChartImageFormat::Png);
+				break;
+		}
+	} else {
+		MemoryStream ^chartStream = gcnew MemoryStream();
+		switch (image_format) {
+			case MSCHART_FORMAT_JPEG:
+					chart_inst->SaveImage(chartStream, ChartImageFormat::Jpeg);
+				break;
+			case MSCHART_FORMAT_PNG:
+					chart_inst->SaveImage(chartStream, ChartImageFormat::Png);
+				break;
+			case MSCHART_FORMAT_BMP:
+					chart_inst->SaveImage(chartStream, ChartImageFormat::Bmp);
+				break;
+			case MSCHART_FORMAT_TIFF:
+					chart_inst->SaveImage(chartStream, ChartImageFormat::Tiff);
+				break;
+		}
 
-	switch (format) {
-		case MSCHART_FORMAT_JPEG:
-				chart1->SaveImage(chartStream, System::Drawing::Imaging::ImageFormat::Jpeg);
-			break;
-		case MSCHART_FORMAT_PNG:
-				chart1->SaveImage(chartStream, System::Drawing::Imaging::ImageFormat::Png);
-			break;
-		case MSCHART_FORMAT_BMP:
-				chart1->SaveImage(chartStream, System::Drawing::Imaging::ImageFormat::Bmp);
-			break;
-		case MSCHART_FORMAT_ICON:
-				chart1->SaveImage(chartStream, System::Drawing::Imaging::ImageFormat::Icon);
-			break;
-		case MSCHART_FORMAT_TIFF:
-				chart1->SaveImage(chartStream, System::Drawing::Imaging::ImageFormat::Tiff);
-			break;
-		case MSCHART_FORMAT_WMF:
-				chart1->SaveImage(chartStream, System::Drawing::Imaging::ImageFormat::Wmf);
-			break;
-	}
+		//chart_inst->SaveImage(chartStream, ChartImageFormat::Jpeg);
+		chartStream->Seek(0, SeekOrigin::Begin);
+		pin_ptr<unsigned char> x = &buf[0];
 
-	if (!format_valid) {
-		zend_throw_exception_ex(zend_exception_get_default(TSRMLS_C), 0 TSRMLS_CC, "Invalid image format '%s'", format);
-	}
-
-	chart1->SaveImage(chartStream, System::Drawing::Imaging::ImageFormat::Jpeg);
-	chartStream->Seek(0, SeekOrigin::Begin);
-	pin_ptr<unsigned char> x = &buf[0];
-
-	while ((b = chartStream->Read(buf, 0, buf->Length)) > 0) {
-		php_write(x, b TSRMLS_CC);
+		while ((b = chartStream->Read(buf, 0, buf->Length)) > 0) {
+			php_write(x, b TSRMLS_CC);
+		}
 	}
 
 	RETURN_TRUE;
