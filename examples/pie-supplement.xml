@@ -1,0 +1,45 @@
+<Chart BackColor="211, 223, 240" Size="412, 296" BackGradientStyle="TopBottom" BackSecondaryColor="White" BorderlineColor="26, 59, 105" BorderlineWidth="2" BorderlineDashStyle="Solid">
+  <Series>
+    <Series Name="Default" Legend="Default" XValueType="Double" YValueType="Double" ShadowOffset="5" ChartType="Doughnut" ChartArea="Default" BorderColor="180, 26, 59, 105" Font="Trebuchet MS, 8pt, style=Bold" CustomProperties="PieLabelStyle=Inside, PieStartAngle=8">
+      <Points>
+        <DataPoint YValues="65.62" Color="65, 140, 240" AxisLabel="France" />
+        <DataPoint YValues="85.73" Color="224, 64, 10" AxisLabel="USA" />
+        <DataPoint YValues="11.42" Color="5, 100, 146" AxisLabel="Italy" />
+        <DataPoint YValues="34.45" Color="191, 191, 191" AxisLabel="Germany" />
+        <DataPoint YValues="75.54" Color="26, 59, 105" AxisLabel="Canada" />
+        <DataPoint YValues="2.1" IsValueShownAsLabel="False" Color="252, 180, 65" LegendText="Japan" AxisLabel="" Label="" />
+        <DataPoint YValues="5.7" IsValueShownAsLabel="False" Color="255, 227, 130" LegendText="Russia" AxisLabel="" Label="" />
+        <DataPoint YValues="4.1" IsValueShownAsLabel="False" Color="18, 156, 221" LegendText="Spain" AxisLabel="" Label="" />
+      </Points>
+    </Series>
+    <Series Name="Default_Supplemental" Legend="Default" ShadowOffset="5" ChartType="Doughnut" ChartArea="Default_Supplemental" BorderColor="180, 26, 59, 105" Font="Trebuchet MS, 8pt, style=Bold">
+      <Points>
+        <DataPoint YValues="2.1" Color="252, 180, 65" IsVisibleInLegend="False" AxisLabel="Japan" />
+        <DataPoint YValues="5.7" Color="255, 227, 130" IsVisibleInLegend="False" AxisLabel="Russia" />
+        <DataPoint YValues="4.1" Color="18, 156, 221" IsVisibleInLegend="False" AxisLabel="Spain" />
+      </Points>
+    </Series>
+  </Series>
+  <Legends>
+    <Legend Name="Default" Enabled="False" IsTextAutoFit="False" LegendStyle="Row" BackColor="Transparent" Font="Trebuchet MS, 8.25pt, style=Bold" Alignment="Center" Docking="Bottom">
+    </Legend>
+  </Legends>
+  <ChartAreas>
+    <ChartArea BackColor="Transparent" BackSecondaryColor="White" ShadowColor="" BorderColor="64, 64, 64, 64" BorderWidth="0" Name="Default">
+      <AxisY LineColor="64, 64, 64, 64">
+        <MajorGrid LineColor="64, 64, 64, 64" />
+        <LabelStyle Font="Trebuchet MS, 8.25pt, style=Bold" />
+      </AxisY>
+      <AxisX LineColor="64, 64, 64, 64">
+        <MajorGrid LineColor="64, 64, 64, 64" />
+        <LabelStyle Font="Trebuchet MS, 8.25pt, style=Bold" />
+      </AxisX>
+      <Position X="3" Y="3" Width="48.4" Height="96" Auto="False" />
+      <Area3DStyle IsRightAngleAxes="False" IsClustered="True" Perspective="10" Inclination="15" Rotation="10" WallWidth="0" />
+    </ChartArea>
+    <ChartArea BackColor="Transparent" BorderColor="64, 64, 64, 64" BorderWidth="0" Name="Default_Supplemental">
+      <Position X="56.4" Y="3" Width="39.6" Height="96" Auto="False" />
+    </ChartArea>
+  </ChartAreas>
+  <BorderSkin SkinStyle="Emboss" />
+</Chart>

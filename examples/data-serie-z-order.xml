@@ -1,0 +1,49 @@
+<Chart BackColor="211, 223, 240" Size="412, 296" BackGradientStyle="TopBottom" BorderlineColor="26, 59, 105" BorderlineWidth="2" BorderlineDashStyle="Solid">
+  <Series>
+    <Series Name="Series1" Legend="Default" XValueType="DateTime" YValueType="Double" ChartArea="Default" Color="220, 65, 140, 240" BorderColor="180, 26, 59, 105">
+      <Points>
+        <DataPoint YValues="3" />
+        <DataPoint YValues="7" />
+        <DataPoint YValues="8" />
+        <DataPoint YValues="6" />
+        <DataPoint YValues="7" />
+      </Points>
+    </Series>
+    <Series Name="Series3" Legend="Default" XValueType="DateTime" YValueType="Double" ChartType="SplineArea" ChartArea="Default" Color="220, 224, 64, 10" BorderColor="180, 26, 59, 105">
+      <Points>
+        <DataPoint YValues="1" />
+        <DataPoint YValues="2" />
+        <DataPoint YValues="4" />
+        <DataPoint YValues="5" />
+        <DataPoint YValues="1" />
+      </Points>
+    </Series>
+    <Series Name="Series2" Legend="Default" XValueType="DateTime" YValueType="Double" ChartType="Spline" ChartArea="Default" Color="220, 252, 180, 65" BorderColor="180, 26, 59, 105">
+      <Points>
+        <DataPoint YValues="4" />
+        <DataPoint YValues="2" />
+        <DataPoint YValues="3" />
+        <DataPoint YValues="1" />
+        <DataPoint YValues="6" />
+      </Points>
+    </Series>
+  </Series>
+  <Legends>
+    <Legend Name="Default" IsTextAutoFit="False" BackColor="Transparent" Font="Trebuchet MS, 8.25pt, style=Bold">
+    </Legend>
+  </Legends>
+  <ChartAreas>
+    <ChartArea BackColor="64, 165, 191, 228" BackGradientStyle="TopBottom" BackSecondaryColor="Transparent" ShadowColor="Transparent" BorderColor="64, 64, 64, 64" Name="Default">
+      <AxisY LineColor="64, 64, 64, 64">
+        <MajorGrid LineColor="64, 64, 64, 64" />
+        <LabelStyle Font="Trebuchet MS, 8.25pt, style=Bold" />
+      </AxisY>
+      <AxisX LineColor="64, 64, 64, 64">
+        <MajorGrid LineColor="64, 64, 64, 64" />
+        <LabelStyle Font="Trebuchet MS, 8.25pt, style=Bold" Format="dd MMM" />
+      </AxisX>
+      <Area3DStyle Enable3D="True" IsRightAngleAxes="False" IsClustered="True" Perspective="10" Inclination="15" Rotation="10" WallWidth="0" />
+    </ChartArea>
+  </ChartAreas>
+  <BorderSkin SkinStyle="Emboss" />
+</Chart>

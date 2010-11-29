@@ -1,0 +1,5 @@
+- Create minimal Chart & co internals classes, mainly for:
+ - Add the data dynamically from:
+   . databases
+   . stream
+   . iterators (SPL?)
